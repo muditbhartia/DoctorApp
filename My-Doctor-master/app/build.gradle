@@ -1,0 +1,58 @@
+apply plugin: 'com.android.application'
+
+repositories {
+    google()
+    jcenter()
+}
+
+allprojects {
+    // Workaround for https://issuetracker.google.com/117900475
+    // Remove when upgrading to AGP 3.4 or higher.
+    configurations.matching { it.name == '_internal_aapt2_binary' }.all { config ->
+        config.resolutionStrategy.eachDependency { details ->
+            details.useVersion("3.5.0-alpha03-5252756")
+        }
+    }
+}
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        applicationId "com.example.mydoctor"
+        minSdkVersion 21
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    // FirebaseUI for Firebase Realtime Database
+
+
+    implementation 'com.android.support:appcompat-v7:26.+'
+    implementation 'com.android.support:cardview-v7:26.+'
+    implementation 'com.android.support:recyclerview-v7:26.+'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
+    implementation 'com.google.firebase:firebase-auth:10.0.1'
+    implementation 'com.google.firebase:firebase-database:10.0.1'
+    implementation 'com.google.firebase:firebase-storage:10.0.1'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.github.jrvansuita:PickImage:2.1.2'
+    implementation 'com.firebaseui:firebase-ui-database:1.1.1'
+    testImplementation 'junit:junit:4.12'
+}
+apply plugin: 'com.google.gms.google-services'
